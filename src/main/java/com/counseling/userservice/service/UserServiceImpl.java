@@ -47,11 +47,14 @@ public class UserServiceImpl implements UserService {
 //        HttpHeaders httpHeaders = new HttpHeaders();
 //        httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 //        HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
-
+//
 //        ResponseEntity<String> response = restTemplate.exchange
-//                ("http://localhost:7073/booking-service/welcome", HttpMethod.GET, entity,String.class);
+//                ("http://booking-service/booking-service/welcome", HttpMethod.GET, entity,String.class);
 //        return response.getBody();
+
+        //To make it dynamic on rest template use the @loadbalance and use service-id on ip and port number
        return orderProxy.welcome();
+//
 
     }
     @Override
