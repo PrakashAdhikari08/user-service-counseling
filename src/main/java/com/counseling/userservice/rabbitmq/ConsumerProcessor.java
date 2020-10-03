@@ -1,4 +1,4 @@
 package com.counseling.userservice.rabbitmq;
 
-public class UserMessageSender {
+public class ConsumerProcessor {
 }
