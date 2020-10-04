@@ -10,6 +10,6 @@ public interface UserService {
 
     String getOrder();
 
-    String setOrder(BookingDto bookingDto, String customerName);
+    void setBooking(BookingDto bookingDto, String customerName);
 
 }

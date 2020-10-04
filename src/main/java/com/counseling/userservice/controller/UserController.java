@@ -2,10 +2,13 @@ package com.counseling.userservice.controller;
 
 import com.counseling.userservice.dto.BookingDto;
 import com.counseling.userservice.dto.UserDto;
+import com.counseling.userservice.rabbitmq.RabbitMqChannel;
 import com.counseling.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,6 +20,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private RabbitMqChannel rabbitMqChannel;
+
+    @Autowired
     private RestTemplate restTemplate;
 
     @GetMapping("/hello")
@@ -26,7 +32,8 @@ public class UserController {
 
     @PostMapping("/appointment/{customerName}")
     public String  makeAppointment(@RequestBody BookingDto bookingDto, @PathVariable String customerName){
-        return userService.setOrder(bookingDto, customerName);
+        userService.setBooking(bookingDto, customerName);
+        return "Booking in Process";
     }
 
     @PostMapping("/admin/add")
@@ -40,4 +47,15 @@ public class UserController {
        return userService.getOrder();
     }
 
+
+    @PostMapping("/greet/{name}")
+    public ResponseEntity<String> publish(@PathVariable String name) {
+        String greeting = "Hello, " + name + "!";
+        System.out.println(greeting);
+        Message<String> msg = MessageBuilder.withPayload(greeting)
+                .build();
+        rabbitMqChannel.booking().send(msg);
+
+        return new ResponseEntity<>("Greeting send", HttpStatus.OK);
+    }
 }

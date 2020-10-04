@@ -5,10 +5,13 @@ import com.counseling.userservice.domain.Role;
 import com.counseling.userservice.domain.User;
 import com.counseling.userservice.dto.BookingDto;
 import com.counseling.userservice.dto.UserDto;
-import com.counseling.userservice.feignproxy.OrderProxy;
+import com.counseling.userservice.feignproxy.BookingProxy;
 import com.counseling.userservice.mapper.UserMapper;
+import com.counseling.userservice.rabbitmq.RabbitMqChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +24,9 @@ import java.util.Arrays;
 public class UserServiceImpl implements UserService {
 
     @Autowired
+    private RabbitMqChannel rabbitMqChannel;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -30,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private OrderProxy orderProxy;
+    private BookingProxy bookingProxy;
 
     @Override
     @Transactional
@@ -53,16 +59,16 @@ public class UserServiceImpl implements UserService {
 //        return response.getBody();
 
         //To make it dynamic on rest template use the @loadbalance and use service-id on ip and port number
-       return orderProxy.welcome();
+       return bookingProxy.welcome();
 //
 
     }
     @Override
     @Transactional
-    public String setOrder(BookingDto bookingDto,String customerName) {
+    public void setBooking(BookingDto bookingDto,String customerName) {
 //        HttpHeaders httpHeaders = new HttpHeaders();
 //        httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//        bookingDto.setCoustomerName(customerName);
+        bookingDto.setCoustomerName(customerName);
 //        HttpEntity<BookingDto> entity = new HttpEntity<BookingDto>(bookingDto,httpHeaders);
 //
 //        ResponseEntity<String> response = restTemplate.exchange
@@ -70,8 +76,12 @@ public class UserServiceImpl implements UserService {
 //                        HttpMethod.POST, entity,String.class);
 //        return response.getBody();
 
-        ResponseEntity<String> responseEntity = orderProxy.makeAppointment(bookingDto, customerName);
-        return  responseEntity.getBody();
+//        ResponseEntity<String> responseEntity = bookingProxy.makeAppointment(bookingDto, customerName);
+//        return  responseEntity.getBody();
+        Message<BookingDto> message = MessageBuilder.withPayload(bookingDto).build();
+
+        rabbitMqChannel.booking().send(message);
+        System.out.println("Booking Request Made");
 
     }
 }

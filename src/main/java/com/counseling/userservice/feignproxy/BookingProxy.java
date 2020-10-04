@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @FeignClient("booking-service")
 @RequestMapping(value = "/booking-service/")
-public interface OrderProxy {
+public interface BookingProxy {
 
     @GetMapping(value = "welcome")
     String welcome();

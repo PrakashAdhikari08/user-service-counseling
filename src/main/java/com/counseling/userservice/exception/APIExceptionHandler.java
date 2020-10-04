@@ -1,6 +1,8 @@
-package com.bookingservice.bookingservice.exception;
+package com.counseling.userservice.exception;
 
 
+
+import com.counseling.userservice.exception.BookingNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

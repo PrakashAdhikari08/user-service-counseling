@@ -1,4 +1,4 @@
-package com.bookingservice.bookingservice.exception;
+package com.counseling.userservice.exception;
 
 import lombok.Data;
 
