@@ -81,7 +81,8 @@ public class UserServiceImpl implements UserService {
         Message<BookingDto> message = MessageBuilder.withPayload(bookingDto).build();
 
         rabbitMqChannel.booking().send(message);
-        System.out.println("Booking Request Made");
+        throw new RuntimeException("Problem is consumer");
+//        System.out.println("Booking Request Made");
 
     }
 }
