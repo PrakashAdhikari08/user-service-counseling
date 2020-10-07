@@ -12,4 +12,5 @@ public interface UserService {
 
     void setBooking(BookingDto bookingDto, String customerName);
 
+    void addCustomerAndBooking(UserDto userDto);
 }

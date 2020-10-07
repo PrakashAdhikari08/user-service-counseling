@@ -58,4 +58,10 @@ public class UserController {
 
         return new ResponseEntity<>("Greeting send", HttpStatus.OK);
     }
+
+    @PostMapping("/add-customer/book")
+    public ResponseEntity<String> addCustomerAndBooking(@RequestBody UserDto userDto){
+        userService.addCustomerAndBooking(userDto);
+        return new ResponseEntity<>("Customer Creation and Order Placing into process", HttpStatus.OK);
+    }
 }

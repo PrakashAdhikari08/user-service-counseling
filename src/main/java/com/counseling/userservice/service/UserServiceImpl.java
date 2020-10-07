@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 
@@ -84,5 +85,21 @@ public class UserServiceImpl implements UserService {
         throw new RuntimeException("Problem is consumer");
 //        System.out.println("Booking Request Made");
 
+    }
+
+    //for compensating transaction
+    @Override
+    @Transactional
+    public void addCustomerAndBooking(UserDto userDto) {
+        User user = new User();
+        user = userMapper.toEntity(userDto);
+        userRepository.save(user);
+        BookingDto bookingDto = new BookingDto();
+        bookingDto.setCoustomerName("Raju");
+        bookingDto.setBookingDate(LocalDate.of(2021,12,02));
+        bookingDto.setBookingTime(LocalTime.of(12,20));
+
+        Message<BookingDto> message = MessageBuilder.withPayload(bookingDto).build();
+        rabbitMqChannel.booking().send(message);
     }
 }
