@@ -1,5 +1,6 @@
 package com.counseling.userservice;
 
+import com.counseling.userservice.rabbitmq.CompensateBookingTransaction;
 import com.counseling.userservice.rabbitmq.RabbitMqChannel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients
-@EnableBinding(RabbitMqChannel.class)
+@EnableBinding({RabbitMqChannel.class, CompensateBookingTransaction.class})
 public class UserServiceApplication {
 
     public static void main(String[] args) {
