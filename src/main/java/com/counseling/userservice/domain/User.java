@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,10 +30,22 @@ public class User {
 
     private String password;
 
-    @Enumerated
-    private Role role;
+    @Column(name="is_enabled", columnDefinition = "boolean DEFAULT true")
+    private boolean enable = true;
+
+    @Column(name = "is_credentials_expired", columnDefinition = "boolean DEFAULT false")
+    private boolean credentialsExpired;
+
+    @Column(name = "is_locked", columnDefinition = "boolean DEFAULT false")
+    private boolean locked = false;
+
+    @Column(name = "is_expired", columnDefinition = "boolean DEFAULT false")
+    private boolean expired = false;
 
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd , HH:mm")
     private LocalDateTime createdDateTime;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserRoleMapping> userRoleMappingList;
 }

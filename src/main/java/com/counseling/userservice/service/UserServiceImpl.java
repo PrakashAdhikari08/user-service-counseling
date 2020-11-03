@@ -1,7 +1,6 @@
 package com.counseling.userservice.service;
 
 import com.counseling.userservice.dao.UserRepository;
-import com.counseling.userservice.domain.Role;
 import com.counseling.userservice.domain.User;
 import com.counseling.userservice.dto.BookingDto;
 import com.counseling.userservice.dto.UserDto;
@@ -9,7 +8,6 @@ import com.counseling.userservice.feignproxy.BookingProxy;
 import com.counseling.userservice.mapper.UserMapper;
 import com.counseling.userservice.rabbitmq.RabbitMqChannel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
 
 
 @Service
@@ -44,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public Integer addAdmin(UserDto userDto) {
         User user = new User();
         user = userMapper.toEntity(userDto);
-        user.setRole(Role.ROLE_ADMIN);
+//        user.setRole(Role.ROLE_ADMIN);
         userRepository.save(user);
         return user.getId();
     }
@@ -82,8 +79,8 @@ public class UserServiceImpl implements UserService {
         Message<BookingDto> message = MessageBuilder.withPayload(bookingDto).build();
 
         rabbitMqChannel.booking().send(message);
-        throw new RuntimeException("Problem is consumer");
-//        System.out.println("Booking Request Made");
+//        throw new RuntimeException("Problem is consumer");
+        System.out.println("Booking Request Made");
 
     }
 

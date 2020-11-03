@@ -1,2 +1,6 @@
-package com.counseling.userservice.security.rolepermissionconfig;public class ConfigServce {
+package com.counseling.userservice.security.rolepermissionconfig;
+
+
+public interface ConfigServce {
+    void configureRoleAndPerm();
 }

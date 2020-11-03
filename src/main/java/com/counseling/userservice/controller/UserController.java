@@ -1,5 +1,8 @@
 package com.counseling.userservice.controller;
 
+import com.counseling.userservice.dao.UserRepository;
+import com.counseling.userservice.domain.User;
+import com.counseling.userservice.domain.UserRoleMapping;
 import com.counseling.userservice.dto.BookingDto;
 import com.counseling.userservice.dto.UserDto;
 import com.counseling.userservice.rabbitmq.RabbitMqChannel;
@@ -20,13 +23,22 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private RabbitMqChannel rabbitMqChannel;
 
     @Autowired
     private RestTemplate restTemplate;
 
+
+
     @GetMapping("/hello")
     public String  hello(){
+        User user = new User();
+        user.setUsername("abc@gmail.com");
+        user.setPassword("11111111");
+        userRepository.save(user);
         return "Hello From user service";
     }
 

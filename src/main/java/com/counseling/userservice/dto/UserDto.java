@@ -1,10 +1,8 @@
 package com.counseling.userservice.dto;
 
-import com.counseling.userservice.domain.Role;
 import lombok.Data;
 
 import javax.persistence.Enumerated;
-import java.util.UUID;
 
 @Data
 public class UserDto {
@@ -18,7 +16,7 @@ public class UserDto {
     private String password;
 
 
-    @Enumerated
-    private Role role;
+//    @Enumerated
+//    private Role role;
 
 }
