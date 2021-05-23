@@ -16,6 +16,7 @@ public class CompensateBookingService {
     @Transactional
     public void compensateBookingUser(Integer userId){
         System.out.println("The  user is is "+userId);
+
         userRepository.deleteById(userId);
     }
 }
